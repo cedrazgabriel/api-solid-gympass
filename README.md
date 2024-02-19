@@ -2,6 +2,10 @@
 
 Gympass style app.
 
+## Setup do projeto
+
+Adicionar docker compose up (docker compose up -d) para subir o banco e o docker compose stop para parar o compose.
+
 ## RFs (Requisitos funcionais)
 
 - [ ] Deve ser possível se cadastrar;

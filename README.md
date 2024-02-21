@@ -1,6 +1,20 @@
 # Sobre a aplicação
 
 Gympass style app.
+Uma aplicação backend , utilizando os conceitos de SOLID com Node JS com Fastify, que simula a experiência do aplicativo Gympass, que é um aplicativo construído para usuários se conectarem a academias parceiras.
+
+ ## Tecnologias
+
+ Esse projeto foi desenvolvido com as seguintes tecnologias:
+
+ - [Node.js](https://nodejs.org/en/) 
+ - [Fastify](https://fastify.dev/)
+ - [Prisma](https://www.prisma.io/)
+ - [Zod](https://zod.dev/)
+ - [Vitest](https://vitest.dev/)
+ - [Typescript](https://www.typescriptlang.org/)
+ - [Docker](https://www.docker.com/)
+
 
 ## Setup do projeto
 

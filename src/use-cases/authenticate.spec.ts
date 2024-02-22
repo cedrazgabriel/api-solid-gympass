@@ -1,15 +1,19 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { AuthenticateUseCase } from './authenticate'
 import { hash } from 'bcryptjs'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
-describe('authenticate use case testes', () => {
-  it('deve ser possível autenticar', async () => {
-    const usersRepositoryInMemory = new InMemoryUsersRepository()
-    const sut = new AuthenticateUseCase(usersRepositoryInMemory)
+let usersRepository: InMemoryUsersRepository
+let sut: AuthenticateUseCase
 
-    await usersRepositoryInMemory.create({
+describe('authenticate use case testes', () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRepository()
+    sut = new AuthenticateUseCase(usersRepository)
+  })
+  it('deve ser possível autenticar', async () => {
+    await usersRepository.create({
       name: 'Fulano',
       email: 'fulano@gmail.com',
       password_hash: await hash('123456', 6),
@@ -25,10 +29,7 @@ describe('authenticate use case testes', () => {
   })
 
   it('não deve ser possível se autenticar com e-mail incorreto', async () => {
-    const usersRepositoryInMemory = new InMemoryUsersRepository()
-    const sut = new AuthenticateUseCase(usersRepositoryInMemory)
-
-    await usersRepositoryInMemory.create({
+    await usersRepository.create({
       name: 'Fulano',
       email: 'fulano@gmail.com',
       password_hash: await hash('123456', 6),
@@ -43,10 +44,7 @@ describe('authenticate use case testes', () => {
   })
 
   it('não deve ser possível se autenticar com senha incorreta', async () => {
-    const usersRepositoryInMemory = new InMemoryUsersRepository()
-    const sut = new AuthenticateUseCase(usersRepositoryInMemory)
-
-    await usersRepositoryInMemory.create({
+    await usersRepository.create({
       name: 'Fulano',
       email: 'fulano@gmail.com',
       password_hash: await hash('123456', 6),

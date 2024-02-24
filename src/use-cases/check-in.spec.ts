@@ -3,6 +3,8 @@ import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-c
 import { CheckInUseCase } from './check-in'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { Decimal } from '@prisma/client/runtime/library'
+import { MaxNumberOfCheckinsError } from './errors/max-number-of-checkins-error'
+import { MaxDistanceError } from './errors/max-distance-error'
 
 let checkInsRepository: InMemoryCheckInsRepository
 let gymsRepository: InMemoryGymsRepository
@@ -15,18 +17,19 @@ const gymLatitude = -12.5454134
 const gymLongitude = -38.0243115
 
 describe('register use case testes', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     checkInsRepository = new InMemoryCheckInsRepository()
     gymsRepository = new InMemoryGymsRepository()
     sut = new CheckInUseCase(checkInsRepository, gymsRepository)
 
-    gymsRepository.items.push({
+    await gymsRepository.create({
       id: 'gym-id-01',
       description: 'Gym 01',
       name: 'Gym 01',
-      latitude: new Decimal(userLatitude), // Uso a mesma latitude do usuário para garantir que ele está próximo
-      longitude: new Decimal(userLongitude), // Uso a mesma longitude do usuário para garantir que ele está próximo
+      latitude: userLatitude, // Uso a mesma latitude do usuário para garantir que ele está próximo
+      longitude: userLongitude, // Uso a mesma longitude do usuário para garantir que ele está próximo
       phone: '71999999999',
+      created_at: new Date(),
     })
 
     vi.useFakeTimers()
@@ -56,6 +59,7 @@ describe('register use case testes', () => {
       latitude: new Decimal(gymLatitude),
       longitude: new Decimal(gymLongitude),
       phone: '71999999999',
+      created_at: new Date(),
     })
 
     await expect(() =>
@@ -65,7 +69,7 @@ describe('register use case testes', () => {
         userLatitude,
         userLongitude,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxDistanceError)
   })
 
   it(' não deve ser possível realizar check-in duas vezes no mesmo dia', async () => {
@@ -86,7 +90,7 @@ describe('register use case testes', () => {
         userLatitude,
         userLongitude,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckinsError)
   })
 
   it('deve ser possível realizar check-in em duas datas diferentes', async () => {

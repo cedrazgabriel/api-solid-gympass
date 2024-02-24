@@ -4,6 +4,8 @@ import { randomUUID } from 'node:crypto'
 import dayjs from 'dayjs'
 
 export class InMemoryCheckInsRepository implements ICheckInsRepository {
+  public items: Checkin[] = []
+
   async findByUserIdOnDate(userId: string, date: Date) {
     // isso retorna a data e hora do início do dia (ignorando as horas passadas) ou seja, data + 00:00:00
     const startOfTheDay = dayjs(date).startOf('date')
@@ -23,7 +25,11 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
     return checkInOnSameDate
   }
 
-  public items: Checkin[] = []
+  async findManyByUserId(userId: string, page: number) {
+    return this.items
+      .filter((checkIn) => checkIn.user_id === userId)
+      .slice((page - 1) * 20, page * 20)
+  }
 
   async create(data: Prisma.CheckinUncheckedCreateInput) {
     const checkIn = {

@@ -49,8 +49,6 @@ describe('fetch users check-ins use case testes', () => {
       page: 2,
     })
 
-    console.log(checkIns)
-
     expect(checkIns).toHaveLength(2)
     expect(checkIns).toEqual([
       expect.objectContaining({ gym_id: 'gym-id-21' }),

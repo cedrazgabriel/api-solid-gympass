@@ -31,6 +31,14 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
       .slice((page - 1) * 20, page * 20)
   }
 
+  async findById(checkInId: string) {
+    const checkIn = this.items.find((checkIn) => checkIn.id === checkInId)
+
+    if (!checkIn) return null
+
+    return checkIn
+  }
+
   async countByUserId(userId: string) {
     return this.items.filter((checkIn) => checkIn.user_id === userId).length
   }
@@ -45,6 +53,16 @@ export class InMemoryCheckInsRepository implements ICheckInsRepository {
     }
 
     this.items.push(checkIn)
+
+    return checkIn
+  }
+
+  async save(checkIn: Checkin) {
+    const checkInIndex = this.items.findIndex((item) => item.id === checkIn.id)
+
+    if (checkInIndex >= 0) {
+      this.items[checkInIndex] = checkIn
+    }
 
     return checkIn
   }

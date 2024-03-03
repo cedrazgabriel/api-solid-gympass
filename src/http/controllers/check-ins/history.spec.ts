@@ -45,8 +45,6 @@ describe('check-in history e2e tests', () => {
       .set('Authorization', `Bearer ${token}`)
       .send()
 
-    console.log('aaaa', response.body)
-
     expect(response.statusCode).toEqual(200)
     expect(response.body.checkIns).toEqual([
       expect.objectContaining({

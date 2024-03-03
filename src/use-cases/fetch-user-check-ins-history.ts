@@ -13,8 +13,6 @@ interface FetchUserCheckInsHistoryUseCaseResponse {
 export class FetchUserCheckInsHistoryUseCase {
   constructor(private readonly checkInsRepository: ICheckInsRepository) {}
 
-  private readonly MAX_DISTANCE = 0.1
-
   async execute({
     userId,
     page,

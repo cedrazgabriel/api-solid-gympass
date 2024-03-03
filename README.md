@@ -14,6 +14,7 @@ Uma aplicação backend, utilizando os conceitos de SOLID com Node JS + Fastify,
  - [Vitest](https://vitest.dev/)
  - [Typescript](https://www.typescriptlang.org/)
  - [Docker](https://www.docker.com/)
+ - [Supertest](https://www.npmjs.com/package/supertest)
 
 
 ## Setup do projeto

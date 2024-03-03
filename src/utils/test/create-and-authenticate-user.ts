@@ -21,6 +21,10 @@ export async function createAndAuthenticateUser(
     password: '123456',
   })
 
+  if (authResponse.statusCode === 400) {
+    console.error('Autenticação dos testes falhou')
+  }
+
   const { token } = authResponse.body
 
   return {

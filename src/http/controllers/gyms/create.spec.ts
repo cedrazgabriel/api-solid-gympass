@@ -3,7 +3,7 @@ import request from 'supertest'
 import { app } from '@/app'
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user'
 
-describe('Profile e2e tests', () => {
+describe('Create gym e2e tests', () => {
   // Esperar o app ficar pronto
   beforeAll(async () => {
     await app.ready()
@@ -14,19 +14,20 @@ describe('Profile e2e tests', () => {
     await app.close()
   })
 
-  it('deve ser possível obter o perfil do usuário', async () => {
+  it('deve ser possível criar uma academia', async () => {
     const { token } = await createAndAuthenticateUser(app)
 
-    const profileResponse = await request(app.server)
-      .get('/me')
+    const response = await request(app.server)
+      .post('/gyms')
       .set('Authorization', `Bearer ${token}`)
-      .send()
+      .send({
+        name: 'Academia de teste',
+        description: 'Descricao de teste',
+        phone: '5571991747951',
+        latitude: -23.563987,
+        longitude: -46.653127,
+      })
 
-    expect(profileResponse.statusCode).toEqual(200)
-    expect(profileResponse.body.user).toEqual(
-      expect.objectContaining({
-        email: 'fulano@gmail.com',
-      }),
-    )
+    expect(response.statusCode).toEqual(201)
   })
 })

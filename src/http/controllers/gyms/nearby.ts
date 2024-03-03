@@ -16,7 +16,7 @@ export async function searchNearby(
   })
 
   const { latitude, longitude } = searchNearbyGymsQuerySchema.parse(
-    request.body,
+    request.query,
   )
 
   const searchNearbyGymUseCase = makeFetchNearbyGymsUseCase()

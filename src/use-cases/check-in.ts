@@ -15,6 +15,8 @@ interface CheckInUseCaseRequest {
 
 interface CheckInUseCaseResponse {
   checkIn: Checkin
+
+  
 }
 
 export class CheckInUseCase {
